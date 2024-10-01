@@ -1,0 +1,28 @@
+header, aside{
+    a{
+        text-decoration: none;
+        color: white;
+        &:hover{
+            text-decoration: underline;
+        }
+    }
+    li{
+        list-style: none;
+    }
+}
+.main-wrapped{
+    height: calc(100vh - 56px);
+    overflow: hidden;
+    
+}
+aside{
+    width: 200px;
+    height: 100%;
+    ul{
+        padding-left: 1rem;
+    }
+}
+.content{
+    overflow: auto;
+    width: calc(100% - 150px);
+}
