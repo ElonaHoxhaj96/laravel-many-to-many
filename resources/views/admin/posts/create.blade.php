@@ -47,7 +47,26 @@
               </small>
            @enderror
        </div>
-      
+        <div class="mb-3">
+            <label for="tags" class="form-label d-block">Tag</label>
+            <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                
+                @foreach ($tags as $tag)
+                    <input 
+                      id="tag-{{$tag->id}}"
+                      class="btn-check" 
+                      autocomplete="off"
+                      type="checkbox"
+                      name="tags[]"
+                      value="{{ $tag->id }}" 
+                      @if (in_array($tag->id, old('tags', [])))
+                          checked
+                      @endif               
+                    >
+                    <label class="btn btn-outline-primary" for="tag-{{$tag->id}}">{{ $tag->name}}</label>
+                @endforeach
+            </div>
+        </div>
        <div class="mb-3">
            <label for="reading_time" class="form-label">Tempo di lettura</label>
            <input type="text" class="form-control @error('reading_time') is-invalid @enderror" id="reading_time" name="reading_time" placeholder="inserisci il tempo di lettura" value="{{ old('reading_time') }}">

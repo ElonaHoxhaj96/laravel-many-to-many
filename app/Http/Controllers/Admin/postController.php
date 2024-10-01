@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Category;
+use App\Models\Tag;
 use App\Functions\Helper;
 use App\Http\Requests\PostRequest;
 
@@ -27,7 +28,8 @@ class postController extends Controller
     public function create()
     {
         $categories = Category::all();
-       return view('admin.posts.create', compact('categories'));
+        $tags = Tag::all();
+       return view('admin.posts.create', compact('categories', 'tags'));
     }
 
     /**
@@ -36,13 +38,18 @@ class postController extends Controller
     public function store(PostRequest $request)
     {
         $data = $request->all();
-        $new_post = new Post();
 
         $data['slug'] = Helper::generateSlug($data['title'], Post::class);
-        $new_post->fill($data);
-        $new_post->save();
+       
+        $post = Post::create($data);
 
-        return redirect()->route('admin.posts.show', ['post' => $new_post->id]);
+        //verifico che in data esista la chiave tags che sta a significare che sono stati selezionati dei tag
+        if(array_key_exists('tags', $data)){
+            //se esiste la chiave creo con attach() la relazione con il post creato e gli id dei tag selezionati 
+            $post->tags()->attach($data['tags']);
+        }
+
+        return redirect()->route('admin.posts.show',$post);
     }
 
     /**

@@ -18,6 +18,7 @@
             <th scope="col">Categoria</th>
             <th scope="col">Data</th>
             <th scope="col">Azione</th>
+            <th scope="col">Tag</th>
             </tr>
         </thead>
         <tbody>
@@ -27,6 +28,26 @@
                     <td>{{$post->title}}</td>
                     <td>{{ $post->category ? $post->category->name : 'Nessuna categoria' }}</td>
                     <td>{{( $post->created_at )->format('d/m/Y')}}</td>
+                    <td>
+                        @if ($post->gategory)
+                            <span class="badge text-bg-success">
+                                <a class="text-white" href="{{ route('admin.postPerCategory', $post->caregory)}}">
+                                    {{$post->category->name}}
+                                </a>
+                            </span>
+                        @else 
+                            -
+                        @endif
+                    </td>
+                    <td>
+                        @forelse($post->tags as $tag)
+                            <span class="badge text-bg-warning">
+                                {{$tag->name}}
+                            </span>
+                        @empty
+                            -
+                        @endforelse
+                    </td>
                     <td class="d-flex justify-content-between">
                         <a href="{{ route('admin.posts.show', ['post' => $post->id])}}" class="btn btn-primary">Dettagli</a>
                         <a href="{{ route('admin.posts.edit', ['post' => $post->id])}}" class="btn btn-info">Modifica</a>
